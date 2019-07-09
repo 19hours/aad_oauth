@@ -109,7 +109,7 @@ class AadOAuth {
     }
   }
 
-  Future<bool> _checkAuth() async {
+  Future<bool> checkAuth() async {
     _token = await _authStorage.loadTokenToCache();
     if (_token != null)
       if (_token.refreshToken != null)
