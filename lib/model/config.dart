@@ -18,7 +18,7 @@ class Config {
       this.contentType = "application/x-www-form-urlencoded",
       this.screenSize}) {
     this.authorizationUrl =
-        "https://login.microsoftonline.com/$azureTennantId/oauth2/v2.0/authorize";
+        "https://login.microsoftonline.com/$azureTennantId/oauth2/v2.0/authorize?prompt=consent";
     this.tokenUrl =
         "https://login.microsoftonline.com/$azureTennantId/oauth2/v2.0/token";
   }
