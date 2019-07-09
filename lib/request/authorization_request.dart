@@ -19,7 +19,7 @@ class AuthorizationRequest {
       "response_type": config.responseType,
       "redirect_uri": config.redirectUri,
       "scope": config.scope,
-      // "prompt": "consent"
+      "prompt": "consent"
     };
     this.fullScreen = fullScreen;
     this.clearCookies = clearCookies;
