@@ -108,4 +108,20 @@ class AadOAuth {
       await prefs.setBool(_keyFreshInstall, false);
     }
   }
+
+  Future<bool> _checkAuth() async {
+    _token = await _authStorage.loadTokenToCache();
+    if (_token != null)
+      if (_token.refreshToken != null)
+        try {
+          _token = await _requestToken.requestRefreshToken(_token.refreshToken);
+          return true;
+        } catch (e) {
+          return false;
+        }
+      else
+        return false;
+    else
+      return false;
+  }
 }
