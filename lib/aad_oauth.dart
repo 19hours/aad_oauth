@@ -94,7 +94,7 @@ class AadOAuth {
     String code;
     try {
       code = await _requestCode.requestCode();
-      _token = await _requestToken.requestToken(code);
+      // _token = await _requestToken.requestToken(code);
     } catch (e) {
       print('_performFullAuth' + e);
       rethrow;
