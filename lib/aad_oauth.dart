@@ -41,6 +41,7 @@ class AadOAuth {
       try {
         await _performAuthorization();
       } catch (e) {
+        print('login' + e);
         rethrow;
       }
   }
@@ -80,6 +81,7 @@ class AadOAuth {
       try {
         await _performFullAuthFlow();
       } catch (e) {
+        print('_performAuth' + e);
         rethrow;
       }
     }
@@ -94,6 +96,7 @@ class AadOAuth {
       code = await _requestCode.requestCode();
       _token = await _requestToken.requestToken(code);
     } catch (e) {
+      print('_performFullAuth' + e);
       rethrow;
     }
   }
