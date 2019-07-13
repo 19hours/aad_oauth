@@ -17,7 +17,7 @@ class RequestCode {
     _authorizationRequest = new AuthorizationRequest(config);
   }
 
-  Future<String> requestCode() async {
+  Future<String> requestCode(Function cb) async {
     var code;
     final String urlParams = _constructUrlParams();
     
@@ -33,7 +33,8 @@ class RequestCode {
 
       if(uri.queryParameters["error"] != null) {
         _webView.close();
-        throw new Exception("Access denied or authentation canceled."); 
+        // throw new Exception("Access denied or authentation canceled."); 
+        cb();
       }
       
       if (uri.queryParameters["code"] != null) {

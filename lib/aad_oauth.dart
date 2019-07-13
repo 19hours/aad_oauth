@@ -35,21 +35,21 @@ class AadOAuth {
     _config.screenSize = screenSize;
   }
 
-  Future<void> login() async {
+  Future<void> login(Function cb) async {
     await _removeOldTokenOnFirstLogin();
     if (!Token.tokenIsValid(_token) )
       try {
-        await _performAuthorization();
+        await _performAuthorization(cb);
       } catch (e) {
         print('login' + e);
         rethrow;
       }
   }
 
-  Future<String> getAccessToken() async {
+  Future<String> getAccessToken(Function cb) async {
     if (!Token.tokenIsValid(_token) )
       try {
-        await _performAuthorization();
+        await _performAuthorization(cb);
       } catch (e) {
         rethrow;
       }
@@ -68,7 +68,7 @@ class AadOAuth {
     AadOAuth(_config);
   }
 
-  Future<void> _performAuthorization() async {
+  Future<void> _performAuthorization(Function cb) async {
     // load token from cache
     _token = await _authStorage.loadTokenToCache();
 
@@ -79,7 +79,7 @@ class AadOAuth {
     // if we have no refresh token try to perform full request code oauth flow
     else {
       try {
-        await _performFullAuthFlow();
+        await _performFullAuthFlow(cb);
       } catch (e) {
         print('_performAuth' + e);
         rethrow;
@@ -90,11 +90,11 @@ class AadOAuth {
     await _authStorage.saveTokenToCache(_token);
   }
 
-  Future<void> _performFullAuthFlow() async {
+  Future<void> _performFullAuthFlow(Function cb) async {
     String code;
     try {
-      code = await _requestCode.requestCode();
-      // _token = await _requestToken.requestToken(code);
+      code = await _requestCode.requestCode(cb);
+      _token = await _requestToken.requestToken(code);
     } catch (e) {
       print('_performFullAuth' + e);
       rethrow;
