@@ -38,12 +38,20 @@ class AadOAuth {
   Future<void> login() async {
     await _removeOldTokenOnFirstLogin();
     if (!Token.tokenIsValid(_token) )
-      await _performAuthorization();
+      try {
+        await _performAuthorization();
+      } catch (e) {
+        rethrow;
+      }
   }
 
   Future<String> getAccessToken() async {
     if (!Token.tokenIsValid(_token) )
-      await _performAuthorization();
+      try {
+        await _performAuthorization();
+      } catch (e) {
+        rethrow;
+      }
 
     return _token.accessToken;
   }
