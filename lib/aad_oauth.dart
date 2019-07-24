@@ -47,12 +47,9 @@ class AadOAuth {
   }
 
   Future<String> getAccessToken(Function cb) async {
-    if (!Token.tokenIsValid(_token) )
-      try {
-        await _performAuthorization(cb);
-      } catch (e) {
-        rethrow;
-      }
+    _token = await _authStorage.loadTokenToCache();
+    if (_token != null)
+      _token = await _requestToken.requestRefreshToken(_token.refreshToken);
 
     return _token.accessToken;
   }
@@ -106,6 +103,7 @@ class AadOAuth {
       try {
         _token = await _requestToken.requestRefreshToken(_token.refreshToken);
       } catch (e) {
+        print('performRefreshAuthFlow' + e);
         //do nothing (because later we try to do a full oauth code flow request)
       }
     }
