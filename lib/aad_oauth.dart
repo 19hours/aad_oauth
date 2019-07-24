@@ -47,9 +47,8 @@ class AadOAuth {
   }
 
   Future<String> getAccessToken(Function cb) async {
-    _token = await _authStorage.loadTokenToCache();
     if (_token != null)
-      _token = await _requestToken.requestRefreshToken(_token.refreshToken);
+      await _performRefreshAuthFlow();
 
     return _token.accessToken;
   }
