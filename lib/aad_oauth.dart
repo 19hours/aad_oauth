@@ -119,32 +119,28 @@ class AadOAuth {
 
   Future<bool> checkAuth() async {
     await _removeOldTokenOnFirstLogin();
-    if (!Token.tokenIsValid(_token) ) {
+    if (!Token.tokenIsValid(_token)) {
       try {
         _token = await _authStorage.loadTokenToCache();
-
-        //still have refreh token / try to get new access token with refresh token
         if (_token != null) {
           if (_token.refreshToken != null) {
             try {
               _token = await _requestToken.requestRefreshToken(_token.refreshToken);
-              return true;
             } catch (e) {
               return false;
             }
-          }
-          else {
-            return false;
           }
         }
         else {
           return false;
         }
+        await _authStorage.saveTokenToCache(_token);
+        return true;
       } catch (e) {
         return false;
       }
     } else {
-      return false;
+      return true;
     }
   }
 }
